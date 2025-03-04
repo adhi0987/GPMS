@@ -709,7 +709,7 @@ def panemp(request):
         house_data = cur.fetchall()
         
         query = """
-        SELECT c.complaint_id, citizen_id, c.enrolled_date, c.description
+        SELECT c.complaint_id, citizen_id, c.enrolled_date, c.descriptn
         FROM complaints c;
         """
         cur.execute(query)
