@@ -25,7 +25,8 @@ SECRET_KEY = 'django-insecure-3!8t@#5$c@5g98!-52r-pa0n5)ln275c=0bjne_%m1r8g=c8n(
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["*"]
+
+ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "GramPanchayat.azurewebsites.net,*").split(",")
 
 
 # Application definition
