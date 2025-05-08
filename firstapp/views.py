@@ -26,10 +26,10 @@ def home(request):
 def get_db_connection():
     logger.debug("Attempting to establish a database connection...")
     return psycopg2.connect(
-        dbname="22CS10009",
-        user="22CS10009",
-        password="22CS10009",
-        host="10.5.18.69",
+        dbname="GPMS",
+        user="postgres",
+        password="adhi123",
+        host="localhost",
     )
 
 # Signup View
@@ -110,14 +110,18 @@ def login(request):
         password = request.POST.get("password")
         user_type = request.POST.get("userType")  # Determines the table
 
+        print(f"[DEBUG] Login attempt: username={username}, user_type={user_type}")
+
         try:
             conn = get_db_connection()
             cur = conn.cursor()
 
             # Query to check if user exists in the selected user type table
             check_user_query = f"SELECT id, passwd FROM {user_type} WHERE username = %s;"
+            print(f"[DEBUG] Executing query: {check_user_query}")
             cur.execute(check_user_query, (username,))
             user_record = cur.fetchone()
+            print(f"[DEBUG] Query result: {user_record}")
 
             cur.close()
             conn.close()
@@ -125,27 +129,35 @@ def login(request):
             if user_record:
                 stored_userid, stored_hashed_password = user_record
 
-                # Validate password
-                if check_password(password, stored_hashed_password):
-                    messages.success(request, f"Welcome {stored_userid}! You are logged in.")
-                    request.session["id"] = stored_userid  # Store session data
-                    request.session["user_type"] = user_type  # Store user type
-                    request.session['flag'] = 1
-                    return redirect(f"{user_type}")  # Redirect to dashboard/homepage
+                print(f"[DEBUG] Stored user ID: {stored_userid},Stored Password: {stored_hashed_password}")
+                print(f"[DEBUG] Checking password...")
 
+                # Validate password
+                if password==stored_hashed_password:
+                    print(f"[DEBUG] Password match. Logging in user {stored_userid}")
+                    messages.success(request, f"Welcome {stored_userid}! You are logged in.")
+                    request.session["id"] = stored_userid
+                    request.session["user_type"] = user_type
+                    request.session['flag'] = 1
+                    return redirect(f"{user_type}")
                 else:
+                    print(f"[DEBUG] Invalid password for user {username}")
                     messages.error(request, "Invalid password. Please try again.")
                     return redirect("login")
             else:
+                print(f"[DEBUG] No user found with username {username} in table {user_type}")
                 messages.error(request, "User not found. Please check your details.")
                 return redirect("login")
 
         except psycopg2.Error as e:
+            print(f"[DEBUG] Database error: {e}")
             messages.error(request, f"Database error: {e}")
             return redirect("login")
 
     # GET Request: Show login page
+    print("[DEBUG] GET request - rendering login page")
     return render(request, "login.html", {"messages": messages.get_messages(request)})
+
 
 
 # View to display Village Dashboard with Panchayat Employee Contacts
@@ -709,7 +721,7 @@ def panemp(request):
         house_data = cur.fetchall()
         
         query = """
-        SELECT c.complaint_id, citizen_id, c.enrolled_date, c.descriptn
+        SELECT c.complaint_id, citizen_id, c.enrolled_date, c.descripti on
         FROM complaints c;
         """
         cur.execute(query)

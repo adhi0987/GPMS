@@ -199,12 +199,12 @@ INSERT INTO citizens ( nm, gender, household_id, education_qualification, father
 VALUES 
 -- Family 1
 --( 'Ramesh Kumar', 'Male', 1, '10th Pass', NULL, NULL, NULL, '1980-05-10', 'OBC', 200000, 'Farmer', 'ramesh123', 'pass1'),
-( 'Sita Devi', 'Female', 1, '12th Pass', NULL, NULL, 1, '1982-09-12', 'OBC', 0, 'Unemployed', 'sita123', 'pass2'),
-( 'Ravi Kumar', 'Male', 1, 'Student', 1, 2, NULL, '2005-08-21', 'OBC', 0, 'Student', 'ravi123', 'pass3'),
+( 'Sita Ram', 'Female', 3, '12th Pass', NULL, NULL,NULL, '1982-09-14', 'OBC', 0, 'Unemployed', 'ram123', 'pass4'),
+( 'Ravi Kihore', 'Male', 3, 'Student', NULL, NULL, NULL, '2005-08-20', 'OBC', 0, 'Student', 'kishore123', 'pass10'),
 
 -- Family 2
-( 'Mohan Das', 'Male', 2, 'Graduate', NULL, NULL, 5, '1975-03-14', 'SC', 1000000, 'pe_employee', 'mohan123', 'pass4'),
-( 'Geeta Das', 'Female', 2, 'Post Graduate', NULL, NULL, 4, '1978-11-09', 'SC', 150000, 'Teacher', 'geeta123', 'pass5');
+( 'Mohan Das', 'Male', 2, 'Graduate', NULL, NULL, NULL, '1975-03-14', 'SC', 1000000, 'pe_employee', 'mohan123', 'pass4'),
+( 'Geeta Das', 'Female', 2, 'Post Graduate', NULL, NULL, NULL, '1978-11-09', 'SC', 150000, 'Teacher', 'geeta123', 'pass5');
 
 -- Panchayat Employees Data
 INSERT INTO panchayat_employees ( citizen_id, job_role, salary, username, passwd, stat)
