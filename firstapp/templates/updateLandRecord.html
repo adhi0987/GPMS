@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Update Land Record</title>
+    <link rel="icon" type="image/x-icon" href="https://imgs.search.brave.com/3hNicgZJ3IuwDzZfer7CPYpB0iGGH_ZfowSpVttz_oo/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly90My5m/dGNkbi5uZXQvanBn/LzAzLzIxLzg1LzU4/LzM2MF9GXzMyMTg1/NTg0Ml9HOXJzMGhL/MFQ5b0ljYmlwTTRs/YlR1aEhLUkQ3clln/eS5qcGc">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .form-container {
+            max-width: 400px;
+            margin: auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-shadow: 2px 2px 12px #aaa;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        input[type="number"],
+        input[type="text"] {
+            width: 100%;
+            padding: 8px;
+            box-sizing: border-box;
+        }
+        input[type="submit"] {
+            padding: 10px 15px;
+            margin-left: 40%;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        input[type="submit"]:hover {
+            background-color: #218838;
+        }
+        .btn {
+            display: inline-block; /* Makes the button inline */
+            margin-top: 20px;
+            margin-left: 40%;
+        }
+
+        .btn a {
+            background-color: rgb(195, 30, 30); /* Green background */
+            color: white; /* White text */
+            padding: 10px 20px; /* Top and bottom padding, left and right padding */
+            text-align: center; /* Center the text */
+            text-decoration: none; /* Remove underline from link */
+            border-radius: 5px; /* Rounded corners */
+            transition: background-color 0.3s; /* Smooth transition for hover effect */
+        }
+
+        .btn a:hover {
+            background-color: red; /* Darker green on hover */
+        }
+
+        .btn a:active {
+            background-color: red; /* Even darker green when clicked */
+        }
+    </style>
+</head>
+<body>
+
+<div class="form-container">
+    <h2>Update Land Record</h2>
+    <form action="" method="POST">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="year">Year:</label>
+            <input type="number" id="year" name="year" required>
+        </div>
+
+        <div class="form-group">
+            <label for="crop_type">Crop Type:</label>
+            <input type="text" id="crop_type" name="crop_type" required>
+        </div>
+
+        <input type="submit" value="Update">
+    </form>
+    <div class="btn">
+        <a href= "{% url 'land_records' %}" class="btn-back">Back</a>
+    </div> 
+</div>
+
+</body>
+</html>

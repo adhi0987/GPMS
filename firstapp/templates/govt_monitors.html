@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Government Monitor Main Page</title>
+    <link rel="icon" type="image/x-icon" href="https://imgs.search.brave.com/3hNicgZJ3IuwDzZfer7CPYpB0iGGH_ZfowSpVttz_oo/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly90My5m/dGNkbi5uZXQvanBn/LzAzLzIxLzg1LzU4/LzM2MF9GXzMyMTg1/NTg0Ml9HOXJzMGhL/MFQ5b0ljYmlwTTRs/YlR1aEhLUkQ3clln/eS5qcGc">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+        }
+        h1 {
+            text-align: center;
+        }
+        .accordion {
+            background-color: #eee;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin: 10px 0;
+        }
+        .accordion-header {
+            padding: 10px;
+            cursor: pointer;
+            text-align: left;
+            outline: none;
+            font-size: 18px;
+            transition: background-color 0.3s;
+        }
+        .accordion-header:hover {
+            background-color: #ddd;
+        }
+        .accordion-content {
+            display: none;
+            padding: 10px;
+            border-top: 1px solid #ccc;
+            background-color: white;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+        th, td {
+            border: 1px solid #ccc;
+            padding: 8px;
+            text-align: left;
+        }
+        .button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+            margin-top: 10px;
+        }
+        .button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Government Monitor Main Page</h1>
+
+    <div class="accordion">
+        <div class="accordion-header">Revenue Report</div>
+        <div class="accordion-content">
+            <table>
+                <tr>
+                    <th>Year</th>
+                    <th>Salary</th>
+                    <th>Asset Expenditure</th>
+                    <th>Tax</th>
+                    <th>Scrap</th>
+                    <th>Scheme</th>
+                    <th>Net Amount</th>
+                </tr>
+                {% for record in records %}
+                <tr>
+                    <td>{{ record.year}}</td>
+                    <td>{{ record.salaries }}</td>
+                    <td>{{ record.asset_exp}}</td>
+                    <td>{{ record.tax}}</td>
+                    <td>{{ record.scrap}}</td>
+                    <td>{{ record.scheme}}</td>
+                    <td>{{ record.net_amount}}</td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+
+    <div class="accordion">
+        <div class="accordion-header">Land Report</div>
+        <div class="accordion-content">
+           
+            <table>
+                <tr>
+                    <th>Year</th>
+                    <th>Agricultural Land</th>
+                    <th>Non Agricultural Land</th>
+                    <th>Total Land</th>
+                    
+                </tr>
+                {% for record in land_records %}
+                <tr>
+                    <td>{{ record.year}}</td>
+                    <td>{{ record.total_agricultural_land }}</td>
+                    <td>{{ record.total_non_agricultural_land}}</td>
+                    <td>{{ record.total_land}}</td>
+                    
+                </tr>
+                {% endfor %}
+            </table>
+           
+        </div>
+    </div>
+
+    <div class="accordion">
+        <div class="accordion-header">Welfare Schemes</div>
+        <div class="accordion-content">
+           
+            <table>
+                <tr>
+                    <th>Year</th>
+                    <th>Scheme Name</th>
+                    <th>Number of citizens</th>
+                    
+                </tr>
+                {% for record in welf_records %}
+                <tr>
+                    <td>{{ record.year}}</td>
+                    <td>{{ record.scheme_name }}</td>
+                    <td>{{ record.no_of_citizens}}</td>
+                   
+                </tr>
+                {% endfor %}
+            </table>
+           
+        </div>
+    </div>
+
+    <div class="accordion">
+        <div class="accordion-header">Vaccinations</div>
+        <div class="accordion-content">
+            <table>
+                <tr>
+                    <th>Year</th>
+                    <th>Vaccination Type</th>
+                    <th>Number of citizens</th>
+                    
+                </tr>
+                {% for record in vacc_records %}
+                <tr>
+                    <td>{{ record.year}}</td>
+                    <td>{{ record.vaccine_type }}</td>
+                    <td>{{ record.no_of_citizens}}</td>
+                   
+                </tr>
+                {% endfor %}
+            </table>
+           
+        </div>
+    </div>
+
+    <div class="accordion">
+        <div class="accordion-header">Agriculture Records</div>
+        <div class="accordion-content">
+            
+            <table>
+                <tr>
+                    <th>Year</th>
+                    <th>Crop Type</th>
+                    <th>Total Acres</th>
+                    
+                </tr>
+                {% for record in agri_records %}
+                <tr>
+                    <td>{{ record.year}}</td>
+                    <td>{{ record.crop_type }}</td>
+                    <td>{{ record.total_acres}}</td>
+                   
+                </tr>
+                {% endfor %}
+            </table>
+           
+        </div>
+    </div>
+
+    <div class="accordion">
+        <div class="accordion-header">Census Report</div>
+        <div class="accordion-content">
+            <table>
+                
+                    <tr>
+                        <th>Year</th>
+                        <th>Total Population</th>
+                        <th>Male Population</th>
+                        <th>Female Population</th>
+                        <th>Number of children</th>
+                        <th>Number of senior citizens</th>
+                        <th>Number of births</th>
+                        <th>Number of deaths</th>
+                        <th>Literacy rate</th>
+                        <th>Employment rate</th>
+                    </tr>
+                
+                
+                    {% for record in census_records %}
+                    <tr>
+                        <td>{{ record.year_end}}</td>
+                        <td>{{ record.total_population }}</td>
+                        <td>{{ record.male_count}}</td>
+                        <td>{{ record.female_count}}</td>
+                        <td>{{ record.child_count}}</td>
+                        <td>{{ record.senior_citizen_count}}</td>
+                        <td>{{ record.number_of_births}}</td>
+                        <td>{{ record.number_of_deaths}}</td>
+                        <td>{{ record.literacy_rate}}</td>
+                        <td>{{ record.employment_rate}}</td>
+                    </tr>
+                    {% endfor %}
+                    <!-- Repeat for 4 more rows -->
+                
+            </table>
+            
+        </div>
+    </div>
+
+    <div class="accordion">
+        <div class="accordion-header">Tax Report</div>
+        <div class="accordion-content">
+            <table>
+                <tr>
+                    <th>Year</th>
+                    <th>Total Amount</th>
+                    <th>Paid Amount</th>
+                    <th>Due Amount</th>
+                    
+                </tr>
+                {% for record in tax_records %}
+                <tr>
+                    <td>{{ record.year}}</td>
+                    <td>{{ record.total_tax }}</td>
+                    <td>{{ record.total_paid}}</td>
+                    <td>{{ record.total_due}}</td>
+                </tr>
+                {% endfor %}
+            </table>
+            
+        </div>
+    </div>
+
+    <button class="button" style="display: block; margin: 20px auto;" onclick="location.href='villagedashboard'">Village Dashboard</button>
+    <button class="button" style="display: block;background-color: red; margin: 20px auto;" onclick="location.href='logout'">Logoout</button>
+
+
+    <script>
+        // JavaScript for accordion functionality
+        const accordions = document.querySelectorAll('.accordion-header');
+        accordions.forEach(accordion => {
+            accordion.addEventListener('click', function() {
+                const content = this.nextElementSibling;
+                content.style.display = content.style.display === 'block' ? 'none' : 'block';
+            });
+        });
+    </script>
+
+</body> 
+</html>

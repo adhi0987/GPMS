@@ -1,0 +1,840 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="https://imgs.search.brave.com/3hNicgZJ3IuwDzZfer7CPYpB0iGGH_ZfowSpVttz_oo/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly90My5m/dGNkbi5uZXQvanBn/LzAzLzIxLzg1LzU4/LzM2MF9GXzMyMTg1/NTg0Ml9HOXJzMGhL/MFQ5b0ljYmlwTTRs/YlR1aEhLUkQ3clln/eS5qcGc">
+    <title>Panchayat Employee Main Page</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+        }
+        h1 {
+            text-align: center;
+        }
+        .accordion {
+            background-color: #eee;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin: 10px 0;
+        }
+        .accordion-header {
+            padding: 10px;
+            cursor: pointer;
+            text-align: left;
+            outline: none;
+            font-size: 18px;
+            transition: background-color 0.3s;
+        }
+        .accordion-header:hover {
+            background-color: #ddd;
+        }
+        .accordion-content {
+            display: none;
+            padding: 10px;
+            border-top: 1px solid #ccc;
+            background-color: white;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+        th, td {
+            border: 1px solid #ccc;
+            padding: 8px;
+            text-align: left;
+        }
+        .button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+            margin-top: 10px;
+        }
+        .button:hover {
+            background-color: #45a049;
+        }
+        .up{
+            width:25%;
+            text-align:center;
+        }
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            width: 300px;
+        }
+
+        h1 {
+            font-size: 20px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        label {
+            margin-bottom: 10px;
+            display: block;
+            font-weight: bold;
+            color: #333;
+        }
+
+        select, input[type="text"], input[type="date"], input[type="number"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+
+        select:focus, input[type="text"]:focus, input[type="date"]:focus, input[type="number"]:focus {
+            border-color: #4CAF50;
+            outline: none;
+        }
+
+        .input-fields {
+            display: none; /* Initially hide input fields */
+        }
+
+        .input-fields div {
+            margin-bottom: 10px;
+        }
+
+        /* Button styles */
+        .submit-button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            width: 100%;
+            transition: background-color 0.3s;
+        }
+
+        .submit-button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Panchayat Employee Main Page</h1>
+
+    <div class="accordion">
+        <div class="accordion-header">Citizens</div>
+        <div class="accordion-content">
+            <div class="container">
+                <form id="citizen-search-form" method="POST" action="{% url 'panchayat_employees' %}">
+                    {% csrf_token %}
+                    <label for="ctzn-attribute-select">Choose an attribute:</label>
+                    <select id="ctzn-attribute-select" name="search_attribute" onchange="citizenShowInputFields()">
+                        <option value="">--Select an attribute--</option>
+                        <option value="name"{% if search_params.search_citizen_name %}selected{% endif %}>Name</option>
+                        <option value="dob" {% if search_params.search_citizen_dob_start or search_params.search_citizen_dob_end %}selected{% endif %}>Date of Birth</option>
+                        <option value="gender" {% if search_params.search_citizen_gender %}selected{% endif %}>Gender</option>
+                        <option value="category" {% if search_params.search_citizen_category %}selected{% endif %}>Category</option>
+                        <option value="income" {% if search_params.search_citizen_income_min or search_params.search_citizen_income_max %}selected{% endif %}>Income</option>
+                        <option value="occupation" {% if search_params.search_citizen_occupation %}selected{% endif %}>Occupation</option>
+                    </select>
+    
+                    <div id="ctzn-input-fields" class="input-fields">
+                        {% if search_params.search_citizen_dob_start or search_params.search_citizen_dob_end %}
+                            <label for="citizen-name">Name</label>
+                            <input type="text" id="citizen-name" name="search_citizen_name" value="{{ search_params.search_citizen_name }}">
+                        {% elif search_params.search_citizen_dob_start or search_params.search_citizen_dob_end %}
+                            <label for="dob-start-date">Start Date:</label>
+                            <input type="date" id="dob-start-date" name="search_citizen_dob_start" value="{{ search_params.search_citizen_dob_start }}">
+                            <label for="dob-end-date">End Date:</label>
+                            <input type="date" id="dob-end-date" name="search_citizen_dob_end" value="{{ search_params.search_citizen_dob_end }}">
+                        {% elif search_params.search_citizen_gender %}
+                            <label for="citizen-gender">Gender:</label>
+                            <input type="text" id="citizen-gender" name="search_citizen_gender" placeholder="Enter gender" value="{{ search_params.search_citizen_gender }}">
+                        {% elif search_params.search_citizen_category %}
+                            <label for="citizen-category">Category:</label>
+                            <input type="text" id="citizen-category" name="search_citizen_category" placeholder="Enter category" value="{{ search_params.search_citizen_category }}">
+                        {% elif search_params.search_citizen_income_min or search_params.search_citizen_income_max %}
+                            <label for="citizen-income-min">Minimum Income:</label>
+                            <input type="number" id="citizen-income-min" name="search_citizen_income_min" placeholder="Enter minimum income" value="{{ search_params.search_citizen_income_min }}">
+                            <label for="citizen-income-max">Maximum Income:</label>
+                            <input type="number" id="citizen-income-max" name="search_citizen_income_max" placeholder="Enter maximum income" value="{{ search_params.search_citizen_income_max }}">
+                        {% elif search_params.search_citizen_occupation %}
+                            <label for="citizen-occupation">Occupation:</label>
+                            <input type="text" id="citizen-occupation" name="search_citizen_occupation" placeholder="Enter occupation" value="{{ search_params.search_citizen_occupation }}">
+                        {% endif %}
+                    </div>
+                    
+                    <button type="submit" class="submit-button" id="ctzn-submit-button">Submit</button>
+                </form>
+            </div>
+            
+            <table>
+                <thead>
+                    <tr>
+                        <th>Sno</th>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Gender</th>
+                        <th>DoB</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for record in citizens_record %}
+                    <tr>
+                        <td>{{ record.sno }}</td>
+                        <td>{{ record.id }}</td>
+                        <td>{{ record.name }}</td>
+                        <td>{{ record.gender }}</td>
+                        <td>{{ record.dob }}</td>
+                        <td>
+                            <button onclick="location.href='updateCitizen/?ctzn_id={{ record.id }}'" style="background-color: #4CAF50; color: white; padding: 10px; border: none; cursor: pointer; border-radius: 5px; margin-top: 10px;">Update</button>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            
+            <button class="button" onclick="location.href='addcitizen'">Add New Citizen</button>
+        </div>
+    </div>
+        <div class="accordion">
+            <div class="accordion-header">Lands</div>
+            <div class="accordion-content">
+                <div class="container">
+                    <!-- Dropdown for selecting which attribute to search by -->
+                    <form id="land-search-form" method="POST" action="{% url 'panchayat_employees' %}">
+                        {% csrf_token %}
+                    <label for="land-attribute-select">Choose an attribute:</label>
+                    <select id="land-attribute-select" name="search_attribute" onchange="landShowInputFields()">
+                        <option value="">--Select an attribute--</option>
+                        <option value="land-id" {% if search_params.search_land_id %}selected{% endif %}>Land ID</option>
+                        <option value="owner-name" {% if search_params.search_land_owner %}selected{% endif %}>Owner Name</option>
+                        <option value="type" {% if search_params.search_land_type %}selected{% endif %}>Type</option>
+                    </select>
+    
+                    <!-- This container will hold the dynamic input field -->
+                    <div id="land-input-fields" class="input-fields">
+                        {% if search_params.search_land_id %}
+                            <label for="land-id">Land ID:</label>
+                            <input type="number" id="land-id" name="search_land_id" placeholder="Enter land ID" value="{{ search_params.search_land_id }}">
+                        {% elif search_params.search_land_owner %}
+                            <label for="owner-name">Owner Name:</label>
+                            <input type="text" id="owner-name" name="search_land_owner" placeholder="Enter owner name" value="{{ search_params.search_land_owner }}">
+                        {% elif search_params.search_land_type %}
+                            <label for="type">Type:</label>
+                            <input type="text" id="type" name="search_land_type" placeholder="Enter type" value="{{ search_params.search_land_type }}">
+                        {% endif %}
+                    </div>
+    
+                    <button type="submit" class="submit-button" id="land-submit-button">Submit</button>
+                 </form>
+                </div>
+                
+                <!-- Your table displaying land records -->
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Sno</th>
+                            <th>ID</th>
+                            <th>Type</th>
+                            <th>List of Owners</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for record in land_records %}
+                        <tr>
+                            <td>{{ record.sno }}</td>
+                            <td>{{ record.id }}</td>
+                            <td>{{ record.type }}</td>
+                            <td>{{ record.list_owners }}</td>
+                            <td>
+                                <button onclick="location.href='updateLand/?land_id={{ record.id }}'" style="background-color: #4CAF50; color: white; padding: 10px; border: none; cursor: pointer; border-radius: 5px; margin-top: 10px;">Update</button>
+                                <button onclick="location.href='previousOwners/?land_id={{ record.id }}'" style="background-color: #4CAF50; color: white; padding: 10px; border: none; cursor: pointer; border-radius: 5px; margin-top: 10px;">Previous Records</button>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                <button class="button" onclick="location.href='addland'">Add New Lands</button>
+            </div>
+        </div>
+   
+    
+
+        <div class="accordion">
+            <div class="accordion-header">Certificates</div>
+            <div class="accordion-content">
+                <div class="container">
+                    <form id="certificate-search-form" method="POST" action="{% url 'panchayat_employees' %}">
+                        {% csrf_token %}
+                        <label for="certificate-attribute-select">Choose an attribute:</label>
+                        <select id="certificate-attribute-select" name="search_attribute" onchange="certificateShowInputFields()">
+                            <option value="">--Select an attribute--</option>
+                            <option value="name" {% if search_params.search_certificate_name %}selected{% endif %}>Name</option>
+                            <option value="type" {% if search_params.search_certificate_type %}selected{% endif %}>Type</option>
+                            <option value="issued-between" {% if search_params.search_certificate_start_date or search_params.search_certificate_end_date %}selected{% endif %}>Issued Between</option>
+                        </select>
+        
+                        <div id="certificate-input-fields" class="input-fields">
+                            {% if search_params.search_certificate_name %}
+                                <label for="certificate-name">Name:</label>
+                                <input type="text" id="certificate-name" name="search_certificate_name" placeholder="Enter name" value="{{ search_params.search_certificate_name }}">
+                            {% elif search_params.search_certificate_type %}
+                                <label for="certificate-type">Type:</label>
+                                <input type="text" id="certificate-type" name="search_certificate_type" placeholder="Enter type" value="{{ search_params.search_certificate_type }}">
+                            {% elif search_params.search_certificate_start_date or search_params.search_certificate_end_date %}
+                                <label for="certificate-start-date">Start Date:</label>
+                                <input type="date" id="certificate-start-date" name="search_certificate_start_date" value="{{ search_params.search_certificate_start_date }}">
+                                <label for="certificate-end-date">End Date:</label>
+                                <input type="date" id="certificate-end-date" name="search_certificate_end_date" value="{{ search_params.search_certificate_end_date }}">
+                            {% endif %}
+                        </div>
+        
+                        <button type="submit" class="submit-button" id="certificate-submit-button">Submit</button>
+                    </form>
+                </div>
+        
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Sno</th>
+                            <th>Citizen ID</th>
+                            <th>Citizen Name</th>
+                            <th>Certificate ID</th>
+                            <th>Certificate Type</th>
+                            <th>Issue Date</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for record in cer_records %}
+                        <tr>
+                            <td>{{ record.sno }}</td>
+                            <td>{{ record.c_id }}</td>
+                            <td>{{ record.c_name }}</td>
+                            <td>{{ record.cer_id }}</td>
+                            <td>{{ record.cer_type }}</td>
+                            <td>{{ record.issue_date }}</td>
+                            <td>
+                                <button style="background-color: #4CAF50; color: white; padding: 10px; border: none; cursor: pointer; border-radius: 5px; margin-top: 10px;">Download</button>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                <button class="button" onclick="location.href='issuecertificate'">Issue Certificate</button>
+            </div>
+        </div>
+
+    <div class="accordion">
+        <div class="accordion-header">Taxes</div>
+        <div class="accordion-content">
+            <div class="container">
+                <form id="tax-search-form" method="POST" action="{% url 'panchayat_employees' %}">
+                    {% csrf_token %}
+                    <label for="tax-attribute-select">Choose an attribute:</label>
+                    <select id="tax-attribute-select" name="search_attribute" onchange="taxShowInputFields()">
+                        <option value="">--Select an attribute--</option>
+                        <option value="tax-id" {% if search_params.search_tax_id %}selected{% endif %}>Tax ID</option>
+                        <option value="citizen-name" {% if search_params.search_tax_citizen %}selected{% endif %}>Citizen Name</option>
+                        <option value="tax-type" {% if search_params.search_tax_type %}selected{% endif %}>Tax Type</option>
+                    </select>
+    
+                    <!-- Dynamic Input Fields -->
+                    <div id="tax-input-fields" class="input-fields">
+                        {% if search_params.search_tax_id %}
+                            <label for="tax-id">Tax ID:</label>
+                            <input type="number" id="tax-id" name="search_tax_id" placeholder="Enter tax ID" value="{{ search_params.search_tax_id }}">
+                        {% elif search_params.search_tax_citizen %}
+                            <label for="citizen-name">Citizen Name:</label>
+                            <input type="text" id="citizen-name" name="search_tax_citizen" placeholder="Enter citizen name" value="{{ search_params.search_tax_citizen }}">
+                        {% elif search_params.search_tax_type %}
+                            <label for="tax-type">Tax Type:</label>
+                            <input type="text" id="tax-type" name="search_tax_type" placeholder="Enter tax type" value="{{ search_params.search_tax_type }}">
+                        {% endif %}
+                    </div>
+    
+                    <button type="submit" class="submit-button" id="tax-submit-button">Submit</button>
+                </form>
+            </div>
+    
+            <!-- Table to Display Tax Records -->
+            <table>
+                <thead>
+                    <tr>
+                        <th>Sno</th>
+                        <th>Tax ID</th>
+                        <th>Citizen Name</th>
+                        <th>Tax Type</th>
+                        <th>Total Amount</th>
+                        <th>Due</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for record in tax_records %}
+                    <tr>
+                        <td>{{ record.sno }}</td>
+                        <td>{{ record.tax_id }}</td>
+                        <td>{{ record.name }}</td>
+                        <td>{{ record.tax_type }}</td>
+                        <td>{{ record.total_amount }}</td>
+                        <td>{{ record.due }}</td>
+                        <td>
+                            {% if record.due == 0 %}
+                                <button style="background-color: #4CAF50; color: white; padding: 10px; border: none; cursor: pointer; border-radius: 5px; margin-top: 10px;">Download</button>
+                            {% else %}
+                                <button onclick = "location.href ='citizens/paymentPage/?tax_id={{ record.tax_id }}'";  style="background-color: red; color: white; padding: 10px; border: none; cursor: pointer; border-radius: 5px; margin-top: 10px;">Pay</button>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            <button class="button" onclick="location.href='addtax'">Add New Tax Record</button>
+        </div>
+    </div>
+    
+    <div class="accordion">
+        <div class="accordion-header">Scheme Enrollment</div>
+        <div class="accordion-content">
+            <div class="container">
+                <form id="scheme-search-form" method="POST" action="{% url 'panchayat_employees' %}">
+                    {% csrf_token %}
+                    <label for="scheme-attribute-select">Choose an attribute:</label>
+                    <select id="scheme-attribute-select" name="search_attribute" onchange="schemeShowInputFields()">
+                        <option value="">--Select an attribute--</option>
+                        <option value="member-name" {% if search_params.search_scheme_member %}selected{% endif %}>Member Name</option>
+                        <option value="scheme-name" {% if search_params.search_scheme_name %}selected{% endif %}>Scheme Name</option>
+                    </select>
+    
+                    <div id="scheme-input-fields" class="input-fields">
+                        {% if search_params.search_scheme_member %}
+                            <label for="scheme-member-name">Member Name:</label>
+                            <input type="text" id="scheme-member-name" name="search_scheme_member" placeholder="Enter member name" value="{{ search_params.search_scheme_member }}">
+                        {% elif search_params.search_scheme_name %}
+                            <label for="scheme-name">Scheme Name:</label>
+                            <input type="text" id="scheme-name" name="search_scheme_name" placeholder="Enter scheme name" value="{{ search_params.search_scheme_name }}">
+                        {% endif %}
+                    </div>
+                    
+                    <button type="submit" class="submit-button" id="scheme-submit-button">Submit</button>
+                </form>
+            </div>
+            
+            <table>
+                <thead>
+                    <tr>
+                        <th>Sno</th>
+                        <th>Scheme ID</th>
+                        <th>Scheme Name</th>
+                        <th>Members</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for record in sch_records %}
+                    <tr>
+                        <td>{{ record.sno }}</td>
+                        <td>{{ record.sch_id }}</td>
+                        <td>{{ record.sch_name }}</td>
+                        <td>{{ record.members }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            
+            <button class="button" onclick="location.href='enrolltoschemes'">Enroll a person to scheme</button>
+            <div class="button up">
+                <a href="{% url 'enroll_eligible_members' %}" style="color: white; border: none; cursor: pointer; border-radius: 5px; text-decoration: none; margin: 20px;">
+                    Enroll Eligible Citizens
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="accordion">
+        <div class="accordion-header">Welfare Schemes</div>
+        <div class="accordion-content">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Sno</th>
+                        <th>Scheme ID</th>
+                        <th>Scheme Name</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for record in wel_records %}
+                    <tr>
+                        <td>{{ record.sno }}</td>
+                        <td>{{ record.wel_id }}</td>
+                        <td>{{ record.wel_name }}</td>
+                        <td style="display: flex; gap: 10px; align-items: center;">
+
+                            <button onclick="location.href='viewscheme/?wel_id={{ record.wel_id }}'" 
+                                    style="background-color: #4CAF50; color: white; padding: 10px; border: none; 
+                                           cursor: pointer; border-radius: 5px;">
+                                View Scheme
+                            </button>
+
+                            <a href="{% url 'delete_scheme' record.wel_id %}" 
+                               style="background-color: rgb(248, 5, 5); color: white; padding: 10px; border: none; 
+                                      cursor: pointer; border-radius: 5px; text-decoration: none;">
+                                Delete
+                            </a>
+                        
+                            
+                        </td>                        
+                    </tr>
+                    {% endfor %}
+                    <!-- Repeat for 4 more rows -->
+                </tbody>
+            </table>
+            <button class="button" onclick="location.href='addschemes'">Add Scheme</button>
+            
+        </div>
+    </div>
+
+    <div class="accordion">
+        <div class="accordion-header">Assets</div>
+        <div class="accordion-content">
+            <table>
+                <thead>
+                    <tr>
+                        <th>sno</th>
+                        <th>Asset ID</th>
+                        <th>Asset Name</th>
+                        <th>Location</th>
+                        <th>Expenditure</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for record in assets_records %}
+                    <tr>
+                        <td>{{ record.sno }}</td>
+                        <td>{{ record.ast_id }}</td>
+                        <td>{{ record.ast_name }}</td>
+                        <td>{{ record.loc }}</td>
+                        <td>{{ record.exp }}</td>
+                        <td>{{ record.stat }}</td>
+                        <td style="display: flex; flex-direction: column; gap: 10px;">
+                            <button onclick="location.href='edit_asset/?asset_id={{ record.ast_id }}'"
+                                    style="background-color: #4CAF50; color: white; padding: 10px; border: none; cursor: pointer; border-radius: 5px;">
+                                Edit Expenditure
+                            </button>
+
+                            <a href="{% url 'delete_asset' record.ast_id %}" 
+                                style="background-color: rgb(248, 5, 5); color: white; padding: 10px; border: none; cursor: pointer; border-radius: 4px; text-decoration: none;text-align:center;">
+                                Delete
+                            </a>
+
+                        </td>
+                    </tr>
+                    {% endfor %}
+                    <!-- Repeat for 4 more rows -->
+                </tbody>
+            </table>
+            <button class="button" onclick="location.href='addassets'">Add Asset</button>
+        </div>
+    </div>
+
+    
+        <div class="accordion">
+            <div class="accordion-header">Households</div>
+            <div class="accordion-content">
+                <div class="container">
+                    <!-- Dropdown for selecting which household attribute to search by -->
+                    <form id="house-search-form" method="POST" action="{% url 'panchayat_employees' %}">
+                        {% csrf_token %}
+                    <label for="house-attribute-select">Choose an attribute:</label>
+                    <select id="house-attribute-select" name="search_attribute" onchange="houseShowInputFields()">
+                        <option value="">--Select an attribute--</option>
+                        <option value="address" {% if search_params.search_house_address %}selected{% endif %}>Address</option>
+                        <option value="member" {% if search_params.search_house_member %}selected{% endif %}>Member Name</option>
+                    </select>
+    
+                    <!-- This container will hold the dynamic input field based on the dropdown selection -->
+                    <div id="house-input-fields" class="input-fields">
+                        {% if search_params.search_house_address %}
+                            <label for="address">Address:</label>
+                            <input type="text" id="address" name="search_house_address" placeholder="Enter address" value="{{ search_params.search_house_address }}">
+                        {% elif search_params.search_house_member %}
+                            <label for="member">Member Name:</label>
+                            <input type="text" id="member" name="search_house_member" placeholder="Enter member name" value="{{ search_params.search_house_member }}">
+                        {% endif %}
+                    </div>
+    
+                    <button type="submit" class="submit-button" id="house-submit-button">Submit</button>
+                </form>
+                </div>
+                
+                <!-- Table displaying household records -->
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Sno</th>
+                            <th>Household ID</th>
+                            <th>Address</th>
+                            <th>Members</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for record in house_records %}
+                        <tr>
+                            <td>{{ record.sno }}</td>
+                            <td>{{ record.house_id }}</td>
+                            <td>{{ record.addr }}</td>
+                            <td>{{ record.members }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                <button class="button" onclick="location.href='addhousehold'">Add Household</button>
+            </div>
+        </div>
+    
+    
+    
+    <div class="accordion">
+        <div class="accordion-header">View Complaints</div>
+        <div class="accordion-content">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Sno</th>
+                        <th>Complaint ID</th>
+                        <th>Citizen ID</th>
+                        <th>Date</th>
+                        <th>description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for record in complaints_records %}
+                    <tr>
+                        <td>{{ record.sno }}</td>
+                        <td>{{ record.complaint_id }}</td>
+                        <td>{{ record.citizen_id }}</td>
+                        <td>{{ record.date }}</td>
+                        <td>{{ record.description }}</td>
+                    </tr>
+                    {% endfor %}
+                    <!-- Repeat for 4 more rows -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+
+
+    <button class="button" style="display: block; margin: 20px auto;" onclick="location.href='villagedashboard'">Village Dashboard</button>
+    <button class="button" style="display: block;background-color: red; margin: 20px auto;" onclick="location.href='logout'">Logout</button>
+    <button onclick="location.href='addNotification'" style="background-color: #4CAF50; color: white; padding: 10px; border: none; cursor: pointer; border-radius: 5px; margin-top: 10px;">Add New Notification</button>
+    <script>
+        // JavaScript for accordion functionality
+        const accordions = document.querySelectorAll('.accordion-header');
+        accordions.forEach(accordion => {
+            accordion.addEventListener('click', function() {
+                const content = this.nextElementSibling;
+                content.style.display = content.style.display === 'block' ? 'none' : 'block';
+            });
+        });
+        function citizenShowInputFields() {
+            const attributeSelect = document.getElementById('ctzn-attribute-select');
+            const inputFields = document.getElementById('ctzn-input-fields');
+            inputFields.innerHTML = ''; // Clear previous input fields
+
+            const selectedValue = attributeSelect.value;
+
+            if(selectedValue === 'name'){
+                inputFields.innerHTML=`
+                    <label for="citizen-name">Name</label>
+                    <input type="text" id="citizen-name" name="search_citizen_name" placeholder="Enter Name">
+                `;
+            }
+            else if (selectedValue === 'dob') {
+                inputFields.innerHTML = `
+                    <label for="dob-start-date">Start Date:</label>
+                    <input type="date" id="dob-start-date" name="search_citizen_dob_start">
+                    <label for="dob-end-date">End Date:</label>
+                    <input type="date" id="dob-end-date" name="search_citizen_dob_end">
+                `;
+            } else if (selectedValue === 'gender') {
+                inputFields.innerHTML = `
+                    <label for="citizen-gender">Gender:</label>
+                    <input type="text" id="citizen-gender" name="search_citizen_gender" placeholder="Enter gender">
+                `;
+            } else if (selectedValue === 'category') {
+                inputFields.innerHTML = `
+                    <label for="citizen-category">Category:</label>
+                    <input type="text" id="citizen-category" name="search_citizen_category" placeholder="Enter category">
+                `;
+            } else if (selectedValue === 'income') {
+                inputFields.innerHTML = `
+                    <label for="min-income">Minimum Income:</label>
+                    <input type="number" id="min-income" name="search_citizen_income_min" placeholder="Enter minimum income">
+                    <label for="max-income">Maximum Income:</label>
+                    <input type="number" id="max-income" name="search_citizen_income_max" placeholder="Enter maximum income">
+                `;
+            } else if (selectedValue === 'occupation') {
+                inputFields.innerHTML = `
+                    <label for="citizen-occupation">Occupation:</label>
+                    <input type="text" id="citizen-occupation" name="search_citizen_occupation" placeholder="Enter occupation">
+                `;
+            }
+        
+            // Show the input fields if any are added
+            inputFields.style.display = inputFields.innerHTML ? 'block' : 'none';
+        }
+        function landShowInputFields() {
+            const attributeSelect = document.getElementById('land-attribute-select');
+            const inputFields = document.getElementById('land-input-fields');
+            inputFields.innerHTML = ''; // Clear previous input fields
+
+            const selectedValue = attributeSelect.value;
+
+            if (selectedValue === 'land-id') {
+                inputFields.innerHTML = `
+                    <label for="land-id">Land ID:</label>
+                    <input type="number" id="land-id" name="search_land_id" placeholder="Enter land ID">
+                `;
+            } else if (selectedValue === 'owner-name') {
+                inputFields.innerHTML = `
+                    <label for="owner-name">Owner Name:</label>
+                    <input type="text" id="owner-name" name="search_land_owner" placeholder="Enter owner name">
+                `;
+            } else if (selectedValue === 'type') {
+                inputFields.innerHTML = `
+                    <label for="type">Type:</label>
+                    <input type="text" id="type" name="search_land_type" placeholder="Enter type">
+                `;
+            }
+        
+            // Show the input fields if any are added
+            inputFields.style.display = inputFields.innerHTML ? 'block' : 'none';
+    }
+
+        function certificateShowInputFields() {
+            const attributeSelect = document.getElementById('certificate-attribute-select');
+            const inputFields = document.getElementById('certificate-input-fields');
+            inputFields.innerHTML = ''; // Clear previous input fields
+
+            const selectedValue = attributeSelect.value;
+
+            if (selectedValue === 'name') {
+                inputFields.innerHTML = `
+                    <label for="certificate-name">Name:</label>
+                    <input type="text" id="certificate-name" name="search_certificate_name" placeholder="Enter name">
+                `;
+            } else if (selectedValue === 'type') {
+                inputFields.innerHTML = `
+                    <label for="certificate-type">Type:</label>
+                    <input type="text" id="certificate-type" name="search_certificate_type" placeholder="Enter type">
+                `;
+            } else if (selectedValue === 'issued-between') {
+                inputFields.innerHTML = `
+                    <label for="start-date">Start Date:</label>
+                    <input type="date" id="start-date" name="search_certificate_start_date">
+                    <label for="end-date">End Date:</label>
+                    <input type="date" id="end-date" name="search_certificate_end_date">
+                `;
+            }
+
+            // Show the input fields if any are added
+            inputFields.style.display = inputFields.innerHTML ? 'block' : 'none';
+        }
+        function taxShowInputFields() {
+            const attributeSelect = document.getElementById('tax-attribute-select');
+            const inputFields = document.getElementById('tax-input-fields');
+            inputFields.innerHTML = ''; // Clear previous input fields
+        
+            const selectedValue = attributeSelect.value;
+        
+            if (selectedValue === 'tax-id') {
+                inputFields.innerHTML = `
+                    <label for="tax-id">Tax ID:</label>
+                    <input type="number" id="tax-id" name="search_tax_id" placeholder="Enter tax ID">
+                `;
+            } else if (selectedValue === 'citizen-name') {
+                inputFields.innerHTML = `
+                    <label for="citizen-name">Citizen Name:</label>
+                    <input type="text" id="citizen-name" name="search_tax_citizen" placeholder="Enter citizen name">
+                `;
+            } else if (selectedValue === 'tax-type') {
+                inputFields.innerHTML = `
+                    <label for="tax-type">Tax Type:</label>
+                    <input type="text" id="tax-type" name="search_tax_type" placeholder="Enter tax type">
+                `;
+            }
+        
+            // Show input fields only if one is selected
+            inputFields.style.display = inputFields.innerHTML ? 'block' : 'none';
+        }
+        
+        function schemeShowInputFields() {
+            const attributeSelect = document.getElementById('scheme-attribute-select');
+            const inputFields = document.getElementById('scheme-input-fields');
+            inputFields.innerHTML = ''; // Clear previous input fields
+
+            const selectedValue = attributeSelect.value;
+
+            if (selectedValue === 'member-name') {
+                inputFields.innerHTML = `
+                    <label for="scheme-member-name">Member Name:</label>
+                    <input type="text" id="scheme-member-name" name="search_scheme_member" placeholder="Enter member name">
+                `;
+            } else if (selectedValue === 'scheme-name') {
+                inputFields.innerHTML = `
+                    <label for="scheme-scheme-name">Scheme Name:</label>
+                    <input type="text" id="scheme-scheme-name" name="search_scheme_name" placeholder="Enter scheme name">
+                `;
+            }
+
+            // Show the input fields if any are added
+            inputFields.style.display = inputFields.innerHTML ? 'block' : 'none';
+        }
+
+        function houseShowInputFields() {
+            const attributeSelect = document.getElementById('house-attribute-select');
+            const inputFields = document.getElementById('house-input-fields');
+            inputFields.innerHTML = ''; // Clear previous input fields
+
+            const selectedValue = attributeSelect.value;
+
+             if (selectedValue === 'address') {
+                inputFields.innerHTML = `
+                    <label for="address">Address:</label>
+                    <input type="text" id="address" name="search_house_address" placeholder="Enter address">
+                `;
+            } else if (selectedValue === 'member') {
+                inputFields.innerHTML = `
+                    <label for="member">Member Name:</label>
+                    <input type="text" id="member" name="search_house_members" placeholder="Enter member name">
+                `;
+            }
+            // Show the input fields if any are added
+            inputFields.style.display = inputFields.innerHTML ? 'block' : 'none';
+        }       
+
+
+        function submitForm() {
+            // You can add your form submission logic here
+            alert("Form submitted!");
+        }
+    </script>
+
+</body> 
+</html>

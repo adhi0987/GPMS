@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Village Dashboard</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #449847;
+            color: white;
+            padding: 10px 20px;
+        }
+
+        .navbar .logo img {
+            height: 40px;
+            margin-right: 10px;
+        }
+        .navbar .logo span{
+            font-size: 30px;
+            font-weight: 700;
+        }
+
+        .nav-buttons button {
+            margin-left: 10px;
+            padding: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        .notification-scrollbar {
+            background-color: white;
+            width: 65vw;
+            overflow-x: hidden; /* Hide horizontal scrollbar */
+            white-space: nowrap;
+            padding: 10px;
+            position: relative;
+            height: 50px; /* Set a fixed height */
+            margin-left: 20%;
+        }
+
+        .notification-scrollbar p {
+            display: inline-block;
+            margin: 0 20px; /* Space between notifications */
+        }
+
+        .accordion-container {
+            margin: 20px;
+        }
+
+        .accordion {
+            border: 1px solid #ccc;
+            margin-bottom: 10px;
+        }
+
+        .accordion-header {
+            background-color: #eee;
+            padding: 10px;
+            cursor: pointer;
+        }
+
+        .accordion-content {
+            display: none;
+            padding: 10px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            border: 1px solid #ccc;
+            padding: 8px;
+            text-align: left;
+        }
+        .btn {
+            display: inline-block; /* Makes the button inline */
+            margin: 10px; /* Adds some space around the button */
+        }
+
+        .btn a {
+            background-color: rgb(195, 30, 30); /* Green background */
+            color: white; /* White text */
+            padding: 10px 20px; /* Top and bottom padding, left and right padding */
+            text-align: center; /* Center the text */
+            text-decoration: none; /* Remove underline from link */
+            border-radius: 5px; /* Rounded corners */
+            transition: background-color 0.3s; /* Smooth transition for hover effect */
+        }
+
+        .btn a:hover {
+            background-color: red; /* Darker green on hover */
+        }
+
+        .btn a:active {
+            background-color: red; /* Even darker green when clicked */
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="logo">
+            <img src="https://imgs.search.brave.com/3hNicgZJ3IuwDzZfer7CPYpB0iGGH_ZfowSpVttz_oo/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly90My5m/dGNkbi5uZXQvanBn/LzAzLzIxLzg1LzU4/LzM2MF9GXzMyMTg1/NTg0Ml9HOXJzMGhL/MFQ5b0ljYmlwTTRs/YlR1aEhLUkQ3clln/eS5qcGc" alt="Logo" />
+            <span>Gram Panchayat Managment System</span>
+        </div>
+        <div class="nav-buttons">
+            <button onclick="location.href=' '">Home</button>
+            <button onclick="location.href='login'">Login</button>
+        </div>
+    </nav>
+
+    <!-- Notification Scrollbar -->
+    <div class="notification-scrollbar" id="notification-scrollbar">
+        {% for record in notifications %}
+        <p><span>{{record.date}}:</span>{{ record.txt }}</p>
+        {% endfor %}
+    </div>
+
+    <!-- Accordions -->
+    <div class="accordion-container">
+        <h2>Accordion Section</h2>
+        <div class="accordion">
+            <div class="accordion-header">Employees</div>
+            <div class="accordion-content">
+                <table>
+                    <tr>
+                        <th>Name</th>
+                        <th>Role</th>
+                        <th>Contact</th>
+                    </tr>
+                    {% for record in records %}
+                    <tr>
+                        <td>{{ record.name }}</td>
+                        <td>{{ record.designation }}</td>
+                        <td>{{ record.mobile_number }}</td>
+                    </tr>
+                    {% endfor %}
+                </table>
+            </div>
+        </div>
+        
+        <div class="accordion">
+            <div class="accordion-header">Assets</div>
+            <div class="accordion-content">
+                <table>
+                    <tr>
+                        <th>Type of asset</th>
+                        <th>Location</th>
+                    </tr>
+                    {% for record in assets_records %}
+                    <tr>
+                        <td>{{ record.type_a }}</td>
+                        <td>{{ record.locn }}</td>
+                    </tr>
+                    {% endfor %}
+                </table>
+            </div>
+        </div>
+        <div class="accordion">
+            <div class="accordion-header">Welfare Schemes</div>
+            <div class="accordion-content">
+                <table>
+                    <tr>
+                        <th>Name</th>
+                        <th>Age range</th>
+                        <th>Gender</th>
+                        <th>Occupation</th>
+                        <th>Income</th>
+                        <th>Land</th>
+                        <th>Amount</th>
+                    </tr>
+                    {% for record in scheme_records %}
+                    <tr>
+                        <td>{{ record.nm }}</td>
+                        <td>{{ record.eligible_age_range }}</td>
+                        <td>{{ record.eligible_gender }}</td>
+                        <td>{{ record.eligible_occupation}}</td>
+                        <td>{{ record.eligible_income}}</td>
+                        <td>{{ record.eligible_land_area}}</td>
+                        <td>{{ record.scheme_amt }}</td>
+                    </tr>
+                    {% endfor %}
+                </table>
+            </div>
+        </div>
+        <div class="accordion">
+            <div class="accordion-header">Population</div>
+            <div class="accordion-content">
+                <table>
+                    <tr>
+                        <th>Total population</th>
+                        <th>Male</th>
+                        <th>Female</th>
+                        <th>Children</th>
+                    </tr>
+                    {% for record in population_records %}
+                    <tr>
+                        <td>{{ record.total_population }}</td>
+                        <td>{{ record.male_population }}</td>
+                        <td>{{ record.female_population }}</td>
+                        <td>{{ record.children_population}}</td>
+                    </tr>
+                    {% endfor %}
+                </table>
+            </div>
+        </div>
+        <div class="accordion">
+            <div class="accordion-header">Total Income To Panchayat</div>
+            <div class="accordion-content">
+                <table>
+                    <tr>
+                        <th>Taxes</th>
+                        <th>Scrap Cost</th>
+                        <th>Net Income</th>
+                    </tr>
+                    {% for record in income_records %}
+                    <tr>
+                        <td>{{ record.tax_amount }}</td>
+                        <td>{{ record.scrap_amount }}</td>
+                        <td>{{ record.net_income }}</td>
+                    </tr>
+                    {% endfor %}
+                </table>
+            </div>
+        </div>
+        <div class="accordion">
+            <div class="accordion-header">Total Expenditure  To Panchayat</div>
+            <div class="accordion-content">
+                <table>
+                    <tr>
+                        <th>Salaries</th>
+                        <th>Schemes amount</th>
+                        <th>Asset maintainance</th>
+                    </tr>
+                    {% for record in expenditure_records %}
+                    <tr>
+                        <td>{{ record.salaries }}</td>
+                        <td>{{ record.scheme_amount }}</td>
+                        <td>{{ record.asset_maintenance }}</td>
+                    </tr>
+                    {% endfor %}
+                </table>
+            </div>
+        </div>
+    </div>
+    </form>
+    <div class="btn">
+        <a href="{% if request.session.user_type == 'citizens' %}/citizens{% elif request.session.user_type == 'panchayat_employees' %}/panchayat_employees{% elif request.session.user_type == 'Admin' %}/Admin{% elif request.session.user_type == 'govt_monitors' %}/govt_monitors{% else %}/{% endif %}" >Back</a>
+    </div> 
+    </form>
+    <script>
+        // Accordion functionality
+        document.querySelectorAll('.accordion-header').forEach(header => {
+            header.addEventListener('click', () => {
+                const content = header.nextElementSibling;
+                content.style.display = content.style.display === 'block' ? 'none' : 'block';
+            });
+        });
+
+        // Scrolling effect for notifications
+        const notificationScrollbar = document.getElementById('notification-scrollbar');
+        let scrollAmount = 0;
+
+        function scrollNotifications() {
+            scrollAmount += 1; // Adjust the speed of scrolling
+            if (scrollAmount >= notificationScrollbar.scrollWidth) {
+                scrollAmount = 0; // Reset scroll amount
+            }
+            notificationScrollbar.scrollLeft = scrollAmount;
+            requestAnimationFrame(scrollNotifications);
+        }
+
+        // Start scrolling
+        scrollNotifications();
+    </script>
+</body>
+</html>

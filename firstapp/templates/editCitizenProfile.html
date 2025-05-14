@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Profile</title>
+    <link rel="icon" type="image/x-icon" href="https://imgs.search.brave.com/3hNicgZJ3IuwDzZfer7CPYpB0iGGH_ZfowSpVttz_oo/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly90My5m/dGNkbi5uZXQvanBn/LzAzLzIxLzg1LzU4/LzM2MF9GXzMyMTg1/NTg0Ml9HOXJzMGhL/MFQ5b0ljYmlwTTRs/YlR1aEhLUkQ3clln/eS5qcGc">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin-left: 25%;
+        }
+        .form-container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 400px;
+            margin-left: 20%;
+            margin-top: 20px;
+        }
+        h2 {
+            text-align: center;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        input {
+            width: 90%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .btn {
+            display: inline-block; /* Makes the button inline */
+            margin-top: 20px; /* Adds some space around the button */
+            margin-left: 35%;
+        }
+
+        .btn a {
+            background-color: rgb(195, 30, 30); /* Green background */
+            color: white; /* White text */
+            padding: 10px 20px; /* Top and bottom padding, left and right padding */
+            text-align: center; /* Center the text */
+            text-decoration: none; /* Remove underline from link */
+            border-radius: 5px; /* Rounded corners */
+            transition: background-color 0.3s; /* Smooth transition for hover effect */
+        }
+
+        .btn a:hover {
+            background-color: red; /* Darker green on hover */
+        }
+
+        .btn a:active {
+            background-color: red; /* Even darker green when clicked */
+        }
+    </style>
+</head>
+<body>
+
+    <div class="form-container">
+        <h2>Edit Profile</h2>
+        <form method="POST" action="{% url 'editCitizenProfile' %}">
+            {% csrf_token %}
+            
+            <div class="form-group">
+                <label>Name:</label>
+                <input type="text" value="{{ citizen.citizen_name }}" disabled>
+            </div>
+
+            <div class="form-group">
+                <label>Username:</label>
+                <input type="text" value="{{ citizen.username }}" disabled>
+            </div>
+
+            <div class="form-group">
+                <label>Gender:</label>
+                <input type="text" value="{{ citizen.gender }}" disabled>
+            </div>
+
+            <div class="form-group">
+                <label>Date of Birth:</label>
+                <input type="text" value="{{ citizen.dob }}" disabled>
+            </div>
+
+            <div class="form-group">
+                <label for="education_qualification">Education Qualification:</label>
+                <select name="education_qualification" id="education_qualification" required>
+                    <option value="12th" {% if citizen.education_qualification == "12th" %}selected{% endif %}>12th</option>
+                    <option value="primary" {% if citizen.education_qualification == "primary" %}selected{% endif %}>primary</option>
+                    <option value="secondary" {% if citizen.education_qualification == "secondary" %}selected{% endif %}>secondary</option>
+                    <option value="illiterate" {% if citizen.education_qualification == "illiterate" %}selected{% endif %}>illiterate</option>
+                    <option value="10th" {% if citizen.education_qualification == "10th" %}selected{% endif %}>10th</option>
+                    <option value="Undergraduate" {% if citizen.education_qualification == "Undergraduate" %}selected{% endif %}>Undergraduate</option>
+                    <option value="Postgraduate" {% if citizen.education_qualification == "Postgraduate" %}selected{% endif %}>Postgraduate</option>
+                    <option value="Doctorate" {% if citizen.education_qualification == "Doctorate" %}selected{% endif %}>Doctorate</option>
+                    <option value="none" {% if citizen.education_qualification == "none" %}selected{% endif %}>none</option>
+                </select>
+            </div>
+            
+
+            <div class="form-group">
+                <label for="occupation">Occupation:</label>
+                <input type="text" name="occupation" value="{{ citizen.occupation }}">
+            </div>
+
+            <div class="form-group">
+                <label for="password">New Password (Leave blank if not changing):</label>
+                <input type="password" name="password">
+            </div>
+
+            <button type="submit">Save Changes</button>
+        </form>
+    </div>
+    <div class="btn">
+        <a href="{% url 'citizensProfile' %}" >Back</a>
+    </div>
+</body>
+</html>
