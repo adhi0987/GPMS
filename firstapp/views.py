@@ -29,7 +29,7 @@ def get_db_connection():
         dbname="22CS10009",
         user="22CS10009",
         password="22CS10009",
-        host="10.5.18.69",
+        host="127.0.0.1",
     )
 
 # Signup View
@@ -709,7 +709,7 @@ def panemp(request):
         house_data = cur.fetchall()
         
         query = """
-        SELECT c.complaint_id, citizen_id, c.enrolled_date, c.descriptn
+        SELECT c.complaint_id, citizen_id, c.enrolled_date, c.description
         FROM complaints c;
         """
         cur.execute(query)
