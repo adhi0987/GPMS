@@ -1,1 +1,1 @@
-# GPMS
+# GPMS  GramPanchayat Management System
