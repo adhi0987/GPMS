@@ -5,20 +5,33 @@ urlpatterns = [
      path('', views.home, name='home'),
      path('signup.html',views.signup,name='signup'),
      path('login',views.login,name='login'),
-     path('villagedashboard',views.village_dashboard,name='villagedashboard'),
-     path('citizens',views.citizens,name='citizens'),
-     path('citizens/tax_payments',views.citizenTaxes,name = 'citizenTaxes'),
-     path('citizens/mycertificates',views.mycertificates,name = 'mycertificates'),
-     path('panchayat_employees',views.panemp,name='panchayat_employees'),
-     path('citizens/paymentPage/',views.citizenPayments,name='citizenPayments'),
-     path('citizens/previousTransactions/',views.previousTransactions,name='previousTransactions'),
-     path('citizens/land_records', views.land_records, name = 'land_records'),
-     path('citizens/myschemes',views.citizenschemes,name = 'citizenschemes'),
-     path('citizens/profile',views.citizensProfile,name = 'citizensProfile'),
-     path('citizens/editprofile',views.editCitizenProfile,name = 'editCitizenProfile'),
-     path('govt_monitors',views.govt_monitors,name='govt_monitors'),
      path('logout',views.logout,name = 'logout'),
 
+     path('villagedashboard/',views.village_dashboard,name='villagedashboard'),
+
+
+     path('citizens/',views.citizens,name='citizens'),
+
+     path('citizens/profile/',views.citizensProfile,name = 'citizensProfile'),
+     path('citizens/profile/editprofile/',views.editCitizenProfile,name = 'editCitizenProfile'),
+
+     path('citizens/mycertificates/',views.mycertificates,name = 'mycertificates'),
+
+     path('citizens/myschemes/',views.citizenschemes,name = 'citizenschemes'),
+
+     path('citizens/tax_payments/',views.citizenTaxes,name = 'citizenTaxes'),
+     path('citizens/tax_payments/paymentPage/',views.citizenPayments,name='citizenPayments'),
+     path('citizens/tax_payments/previousTransactions/',views.previousTransactions,name='previousTransactions'),
+     
+     path('citizens/land_records/', views.land_records, name = 'land_records'),
+     path('citizens/land_records/crop_history/', views.crop_history, name='crop_history'),
+     path('citizens/land_records/updateLandRecord/', views.updateLandRecord, name='updateLandRecord'),
+
+     path('citizens/addcomplaints',views.addcomplaints,name='addcomplaints'),
+
+
+     path('govt_monitors',views.govt_monitors,name='govt_monitors'),
+     path('panchayat_employees',views.panemp,name='panchayat_employees'),
      path('addcitizen',views.addcitizen,name="addcitizen"),
      path('addland',views.addland,name="addland"),
      path('issuecertificate',views.issuecertificate,name="issuecertificate"),
@@ -29,8 +42,6 @@ urlpatterns = [
      path('Admin/addemployee_admin', views.addemployee_admin, name = 'addemployee_admin'),  
      path('Admin/deleteGM/',views.inactiveGM,name = 'inactiveGM'),
      path('Admin/deletePE/',views.inactivePE,name = 'inactivePE'),
-     path('citizens/updateLandRecord/', views.updateLandRecord, name='updateLandRecord'),
-     path('citizens/crop_history/', views.crop_history, name='crop_history'),
      path('addassets',views.addassets,name="addassets"),
      path('addhousehold',views.addhousehold,name="addhousehold"),
      path('updateCitizen/',views.updateCitizen,name="updateCitizen"),
@@ -42,7 +53,6 @@ urlpatterns = [
      path("delete_asset/<int:asset_id>/", views.delete_asset, name="delete_asset"),
      path('update_all_taxes/', views.update_all_taxes, name='update_all_taxes'),
      path('enroll_eligible_members/', views.enroll_eligible_members, name='enroll_eligible_members'),
-     path('citizens/addcomplaints',views.addcomplaints,name='addcomplaints'),
      path('addNotification',views.addNotification,name="addNotification")
 
 ]

@@ -244,6 +244,7 @@ def village_dashboard(request):
                     DOB <= CURRENT_DATE
                     AND (date_of_death >= '2025-01-01' OR date_of_death IS NULL);
             """
+            # note this point your code is hard coded to show living people before jan 1
             cur.execute(population_query)
             population_data = cur.fetchall()
 

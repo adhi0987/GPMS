@@ -61,14 +61,14 @@
     <div class="container">
         <h1>Welcome to the Citizens Dashboard</h1>
         <div class="button-container">
-            <a href="citizens/profile" class="button">Profile</a>
-            <a href="citizens/mycertificates" class="button">My Certificates</a>
-            <a href="citizens/myschemes" class="button">My Schemes</a>
-            <a href="citizens/tax_payments" class="button">Tax Payments</a>
-            <a href="citizens/land_records" class="button">Land Records</a>
-            <a href="villagedashboard" class="button">Village Dashboard</a>
-            <a href="citizens/addcomplaints" class="button ">Complaints</a>
-            <a href="logout" class="button logout">Logout</a>
+            <a href="{% url 'citizensProfile'%}" class="button">Profile</a>
+            <a href="{% url 'mycertificates'%}" class="button">My Certificates</a>
+            <a href="{% url 'citizenschemes'%}" class="button">My Schemes</a>
+            <a href="{% url 'citizenTaxes'%}" class="button">Tax Payments</a>
+            <a href="{% url 'land_records'%}" class="button">Land Records</a>
+            <a href="{% url 'villagedashboard'%}" class="button">Village Dashboard</a>
+            <a href="{% url 'addcomplaints'%}" class="button ">Complaints</a>
+            <a href="{% url 'logout'%}" class="button logout">Logout</a>
         </div>
     </div>
 
