@@ -204,7 +204,7 @@
                 </tbody>
             </table>
             
-            <button class="button" onclick="location.href='addcitizen'">Add New Citizen</button>
+            <button class="button" onclick="location.href='{%url 'addcitizen'%}'">Add New Citizen</button>
         </div>
     </div>
         <div class="accordion">
@@ -259,14 +259,14 @@
                             <td>{{ record.type }}</td>
                             <td>{{ record.list_owners }}</td>
                             <td>
-                                <button onclick="location.href='updateLand/?land_id={{ record.id }}'" style="background-color: #4CAF50; color: white; padding: 10px; border: none; cursor: pointer; border-radius: 5px; margin-top: 10px;">Update</button>
-                                <button onclick="location.href='previousOwners/?land_id={{ record.id }}'" style="background-color: #4CAF50; color: white; padding: 10px; border: none; cursor: pointer; border-radius: 5px; margin-top: 10px;">Previous Records</button>
+                                <button onclick="location.href='{% url 'updateLand'%}?land_id={{ record.id }}'" style="background-color: #4CAF50; color: white; padding: 10px; border: none; cursor: pointer; border-radius: 5px; margin-top: 10px;">Update</button>
+                                <button onclick="location.href='{% url 'previousOwners'%}?land_id={{ record.id }}'" style="background-color: #4CAF50; color: white; padding: 10px; border: none; cursor: pointer; border-radius: 5px; margin-top: 10px;">Previous Records</button>
                             </td>
                         </tr>
                         {% endfor %}
                     </tbody>
                 </table>
-                <button class="button" onclick="location.href='addland'">Add New Lands</button>
+                <button class="button" onclick="location.href='{% url 'addland' %}'">Add New Lands</button>
             </div>
         </div>
    
@@ -333,7 +333,7 @@
                         {% endfor %}
                     </tbody>
                 </table>
-                <button class="button" onclick="location.href='issuecertificate'">Issue Certificate</button>
+                <button class="button" onclick="location.href='{% url 'issuecertificate'%}'">Issue Certificate</button>
             </div>
         </div>
 
@@ -358,7 +358,7 @@
                             <input type="number" id="tax-id" name="search_tax_id" placeholder="Enter tax ID" value="{{ search_params.search_tax_id }}">
                         {% elif search_params.search_tax_citizen %}
                             <label for="citizen-name">Citizen Name:</label>
-                            <input type="text" id="citizen-name" name="search_tax_citizen" placeholder="Enter citizen name" value="{{ search_params.search_tax_citizen }}">
+                            <input type="text" id="cipantizen-name" name="search_tax_citizen" placeholder="Enter citizen name" value="{{ search_params.search_tax_citizen }}">
                         {% elif search_params.search_tax_type %}
                             <label for="tax-type">Tax Type:</label>
                             <input type="text" id="tax-type" name="search_tax_type" placeholder="Enter tax type" value="{{ search_params.search_tax_type }}">
@@ -395,7 +395,7 @@
                             {% if record.due == 0 %}
                                 <button style="background-color: #4CAF50; color: white; padding: 10px; border: none; cursor: pointer; border-radius: 5px; margin-top: 10px;">Download</button>
                             {% else %}
-                                <button onclick = "location.href ='citizens/paymentPage/?tax_id={{ record.tax_id }}'";  style="background-color: red; color: white; padding: 10px; border: none; cursor: pointer; border-radius: 5px; margin-top: 10px;">Pay</button>
+                                <button onclick = "location.href ='{% url 'panchayat_taxpay'%}?tax_id={{ record.tax_id }}'";  style="background-color: red; color: white; padding: 10px; border: none; cursor: pointer; border-radius: 5px; margin-top: 10px;">Pay</button>
                             {% endif %}
                         </td>
                     </tr>
@@ -603,7 +603,7 @@
                         {% endfor %}
                     </tbody>
                 </table>
-                <button class="button" onclick="location.href='addhousehold'">Add Household</button>
+                <button class="button" onclick="location.href='{% url 'addhousehold' %}'">Add Household</button>
             </div>
         </div>
     
@@ -632,7 +632,6 @@
                         <td>{{ record.description }}</td>
                     </tr>
                     {% endfor %}
-                    <!-- Repeat for 4 more rows -->
                 </tbody>
             </table>
         </div>
@@ -640,9 +639,9 @@
 
 
 
-    <button class="button" style="display: block; margin: 20px auto;" onclick="location.href='villagedashboard'">Village Dashboard</button>
-    <button class="button" style="display: block;background-color: red; margin: 20px auto;" onclick="location.href='logout'">Logout</button>
-    <button onclick="location.href='addNotification'" style="background-color: #4CAF50; color: white; padding: 10px; border: none; cursor: pointer; border-radius: 5px; margin-top: 10px;">Add New Notification</button>
+    <button class="button" style="display: block; margin: 20px auto;" onclick="location.href='{% url 'villagedashboard' %}'">Village Dashboard</button>
+    <button class="button" style="display: block;background-color: red; margin: 20px auto;" onclick="location.href='{% url 'logout' %}'">Logout</button>
+    <button onclick="location.href='{% url 'addNotification' %}'" style="background-color: #4CAF50; color: white; padding: 10px; border: none; cursor: pointer; border-radius: 5px; margin-top: 10px;">Add New Notification</button>
     <script>
         // JavaScript for accordion functionality
         const accordions = document.querySelectorAll('.accordion-header');
